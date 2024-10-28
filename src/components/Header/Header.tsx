@@ -61,24 +61,40 @@ const Header = () => {
 							transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 						>
 							{token ? (
-								<>
+								<MenuItem
+									sx={{
+										display: 'flex',
+										flexDirection: 'column'
+									}}
+								>
 									<MenuItem
 										component={Link}
 										to='/user'
 										onClick={handleMenuClose}
+										sx={{
+											width: '100%',
+
+											display: 'flex'
+										}}
 									>
 										<ListItemIcon>
 											<AccountCircle fontSize='small' />
 										</ListItemIcon>
 										<Typography variant='inherit'>Мой профиль</Typography>
 									</MenuItem>
-									<MenuItem onClick={handleLogout}>
+									<MenuItem
+										onClick={handleLogout}
+										sx={{
+											width: '100%',
+											display: 'flex'
+										}}
+									>
 										<ListItemIcon>
 											<Logout fontSize='small' />
 										</ListItemIcon>
 										<Typography variant='inherit'>Выйти</Typography>
 									</MenuItem>
-								</>
+								</MenuItem>
 							) : (
 								<MenuItem
 									component={Link}
