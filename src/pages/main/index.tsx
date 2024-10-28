@@ -13,7 +13,7 @@ function App() {
 
 	const [filters, setFilters] = useState<FilterCriteria>({})
 
-	const [layout, setLayout] = useState<'horizontal' | 'vertical'>('horizontal')
+	const [layout, setLayout] = useState<'horizontal' | 'vertical'>('vertical')
 
 	const handleSearchChange = (value: string) => {
 		setSearchTerm(value)

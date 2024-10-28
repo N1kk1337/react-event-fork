@@ -7,7 +7,8 @@ import {
 	Menu,
 	MenuItem,
 	ListItemIcon,
-	Typography
+	Typography,
+	Container
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 import AccountCircle from '@mui/icons-material/AccountCircle'
@@ -37,22 +38,31 @@ const Header = () => {
 	}
 
 	return (
-		<div className='headerContainer'>
-			<AppBar position='static' color='transparent' className='header'>
-				<Toolbar className='toolbar'>
-					<Link to={'/'} className='logoContainer'>
-						<Logo />
-					</Link>
-					<div className='headerBlock'>
-						<Link to={'/'} className='headerLink'>
-							Запросы о помощи
+		<AppBar position='static' color='transparent'>
+			<Container maxWidth='xl'>
+				<Toolbar sx={{ justifyContent: 'space-between' }}>
+					<IconButton
+						size='large'
+						edge='start'
+						color='inherit'
+						aria-label='menu'
+						flex-grow='1'
+					>
+						<Link to={'/'}>
+							<Logo />
 						</Link>
-						<IconButton
-							sx={{ padding: '0 !important' }}
-							onClick={event => handleMenuOpen(event)}
-						>
-							<Avatar className='profileAvatar' />
-						</IconButton>
+					</IconButton>
+					<Link
+						flex-grow='1'
+						to={'/'}
+						style={{ textDecoration: 'none', color: 'black' }}
+					>
+						{'Запросы о помощи'}
+					</Link>
+					<IconButton flex-grow='1' onClick={event => handleMenuOpen(event)}>
+						<Avatar />
+					</IconButton>
+					{token ? (
 						<Menu
 							anchorEl={anchorEl}
 							open={open}
@@ -60,39 +70,35 @@ const Header = () => {
 							anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 							transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 						>
-							{token ? (
-								<>
-									<MenuItem
-										component={Link}
-										to='/user'
-										onClick={handleMenuClose}
-									>
-										<ListItemIcon>
-											<AccountCircle fontSize='small' />
-										</ListItemIcon>
-										<Typography variant='inherit'>Мой профиль</Typography>
-									</MenuItem>
-									<MenuItem onClick={handleLogout}>
-										<ListItemIcon>
-											<Logout fontSize='small' />
-										</ListItemIcon>
-										<Typography variant='inherit'>Выйти</Typography>
-									</MenuItem>
-								</>
-							) : (
-								<MenuItem
-									component={Link}
-									to='/login'
-									onClick={handleMenuClose}
-								>
-									<Typography variant='inherit'>Войти</Typography>
-								</MenuItem>
-							)}
+							<MenuItem component={Link} to='/user' onClick={handleMenuClose}>
+								<ListItemIcon>
+									<AccountCircle fontSize='small' />
+								</ListItemIcon>
+								<Typography variant='inherit'>Мой профиль</Typography>
+							</MenuItem>
+							<MenuItem onClick={handleLogout}>
+								<ListItemIcon>
+									<Logout fontSize='small' />
+								</ListItemIcon>
+								<Typography variant='inherit'>Выйти</Typography>
+							</MenuItem>
 						</Menu>
-					</div>
+					) : (
+						<Menu
+							anchorEl={anchorEl}
+							open={open}
+							onClose={handleMenuClose}
+							anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+							transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+						>
+							<MenuItem component={Link} to='/login' onClick={handleMenuClose}>
+								<Typography variant='inherit'>Войти</Typography>
+							</MenuItem>
+						</Menu>
+					)}
 				</Toolbar>
-			</AppBar>
-		</div>
+			</Container>
+		</AppBar>
 	)
 }
 

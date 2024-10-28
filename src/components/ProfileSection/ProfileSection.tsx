@@ -226,6 +226,7 @@ const FavoritesObjects: React.FC = () => (
 			volunteerType: [],
 			date: ''
 		}}
+		layout={'vertical'}
 	/>
 )
 
