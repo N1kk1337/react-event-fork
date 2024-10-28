@@ -16,7 +16,7 @@ export const LoginForm = () => {
 		document.title = 'Авторизация'
 	}, [])
 
-	const [mutate, { isError }] = useLoginMutation()
+	const [mutate, { isError, }] = useLoginMutation()
 	const navigate = useNavigate()
 	const form = useForm<InputLoginType>({
 		resolver: zodResolver(LoginSchema),

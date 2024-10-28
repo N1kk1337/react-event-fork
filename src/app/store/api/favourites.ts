@@ -9,6 +9,15 @@ export const apiAllFavorites = createApi({
 	}),
 	tagTypes: ['AllFavorites'],
 	endpoints: builder => ({
+		getAllFavourites: builder.query<HelpRequest[], void>({
+			query: () => ({
+				url: `/user/favourites`,
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${AuthServiceTokens.getRefreshToken()}`
+				}
+			})
+		}),
 		addToFavourite: builder.mutation({
 			query: id => ({
 				url: `/user/favourites`,
@@ -20,19 +29,22 @@ export const apiAllFavorites = createApi({
 					Authorization: `Bearer ${AuthServiceTokens.getRefreshToken()}`
 				}
 			})
-			// transformResponse: (res: unknown) => HelpRequestTypes.parse(res)
 		}),
-		getAllFavourites: builder.query<HelpRequest, string>({
-			query: () => ({
-				url: `/user/favourites`,
-				method: 'GET',
+		removeFromFavourites: builder.mutation<string, string>({
+			invalidatesTags: ['AllFavorites'],
+			query: id => ({
+				url: `/user/favourites/${id}`,
+				method: 'DELETE',
 				headers: {
 					Authorization: `Bearer ${AuthServiceTokens.getRefreshToken()}`
 				}
 			})
-			// transformResponse: (res: unknown) => HelpRequestTypes.parse(res)
 		})
 	})
 })
 
-export const { useGetAllFavouritesQuery, useAddToFavouriteMutation } = apiAllFavorites
+export const {
+	useAddToFavouriteMutation,
+	useGetAllFavouritesQuery,
+	useRemoveFromFavouritesMutation
+} = apiAllFavorites

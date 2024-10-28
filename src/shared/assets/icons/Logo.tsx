@@ -6,7 +6,7 @@ export const Logo = () => (
 		fill='none'
 		xmlns='http://www.w3.org/2000/svg'
 	>
-		<g clip-path='url(#clip0_40000030_4404)'>
+		<g clipPath='url(#clip0_40000030_4404)'>
 			<path
 				fill-rule='evenodd'
 				clip-rule='evenodd'

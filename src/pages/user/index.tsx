@@ -1,34 +1,34 @@
-import { useGetProfileQuery } from '~/app/store/api/profile.ts'
+import { useGetProfileQuery } from '~/app/store/api/profile'
 import { useEffect } from 'react'
-import { useGetAllFavoritesQuery } from '~/app/store/api/favorites.ts'
-import ProfileSection from '~/components/ProfileSection/ProfileSection.tsx'
+// import { useGetAllFavouritesQuery } from '~/app/store/api/favourites'
+import ProfileSection from '~/components/ProfileSection/ProfileSection'
+import { Box } from '@mui/material'
 
 export const UserProfilePage = () => {
 	useEffect(() => {
 		document.title = 'Профиль'
 	}, [])
 	const { data, isLoading, isSuccess } = useGetProfileQuery()
-	const {
-		data: favoritesData,
-		isLoading: isLoadingFavorites,
-		isSuccess: isSuccessFavorites
-	} = useGetAllFavoritesQuery()
-	console.log('profile', favoritesData)
+	// const {
+	// 	data: favoritesData,
+	// 	isLoading: isLoadingFavorites,
+	// 	isSuccess: isSuccessFavorites
+	// } = useGetAllFavouritesQuery()
+	// console.log('profile', favoritesData)
+	console.log(data)
 	return (
 		<>
-			<div className=''>
-				{isLoading ? <>loading</> : isSuccess ? <>{data.id}</> : <>error</>}
-			</div>
-			<div className=''>
-				{isLoadingFavorites ? (
+			<div>
+				{isLoading ? (
 					<>loading</>
-				) : isSuccessFavorites ? (
-					<>test</>
+				) : isSuccess ? (
+					<Box sx={{ mt: '2px' }}>
+						<ProfileSection userData={data} />
+					</Box>
 				) : (
 					<>error</>
 				)}
 			</div>
-			<ProfileSection />
 		</>
 	)
 }

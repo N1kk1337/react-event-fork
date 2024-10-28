@@ -138,6 +138,7 @@ const CardsList: React.FC<{ searchTerm: string; filters: FilterCriteria }> = ({
 							contributorsCount={request.contributorsCount}
 							requesterType={request.requesterType}
 							helpType={request.helpType}
+							id={request.id}
 						/>
 					</Grid>
 				))}
