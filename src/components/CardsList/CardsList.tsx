@@ -7,21 +7,26 @@ import { useGetAllCardsQuery } from '~/app/store/api/helpRequestsApi.ts'
 import { AuthServiceTokens } from '~/shared/utils/token.service.ts'
 import ErrorGetCard from '~/components/errorGetCard/ErrorGetCard.tsx'
 import FundraisingCardHorizontal from './FundraisingCardHorizontal'
+import GridViewIcon from '@mui/icons-material/GridView'
+import ViewListIcon from '@mui/icons-material/ViewList'
 
 interface CardsListProps {
 	searchTerm: string
 	filters: FilterCriteria
-	layout: 'vertical' | 'horizontal'
 }
 
-const CardsList: React.FC<CardsListProps> = ({
-	searchTerm,
-	filters,
-	layout
-}) => {
+const CardsList: React.FC<CardsListProps> = ({ searchTerm, filters }) => {
 	const [currentPage, setCurrentPage] = useState(1)
 	const cardsPerPage = 3
 	const { data: helpRequests, isLoading, isError } = useGetAllCardsQuery()
+
+	const [layout, setLayout] = useState<'horizontal' | 'vertical'>('vertical')
+
+	const toggleLayout = () => {
+		setLayout(prevLayout =>
+			prevLayout === 'horizontal' ? 'vertical' : 'horizontal'
+		)
+	}
 
 	const handlePageChange = (
 		_event: React.ChangeEvent<unknown>,
@@ -122,9 +127,16 @@ const CardsList: React.FC<CardsListProps> = ({
 
 	return (
 		<Container maxWidth='lg'>
-			<Typography variant='h5' gutterBottom>
-				Найдено: {totalCards}
-			</Typography>
+			<Box display='flex' justifyContent='space-between'>
+				<Typography variant='h5' gutterBottom>
+					Найдено: {totalCards}
+				</Typography>
+				<Box onClick={toggleLayout}>
+					<GridViewIcon />
+					<ViewListIcon />
+				</Box>
+			</Box>
+
 			<Grid
 				container
 				spacing={3}
@@ -141,6 +153,7 @@ const CardsList: React.FC<CardsListProps> = ({
 					>
 						{layout === 'vertical' ? (
 							<FundraisingCard
+								id={request.id}
 								title={request.title}
 								organizer={request.organization.title}
 								location={request.location.city}

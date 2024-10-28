@@ -1,18 +1,14 @@
 import React from 'react'
 import {
 	Card,
-	CardContent,
 	Typography,
 	Button,
-	Avatar,
 	LinearProgress,
 	Grid,
 	Box
 } from '@mui/material'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
-import DementiaImage from '~/shared/assets/Dementia.png'
-import NursingHomeImage from '~/shared/assets/Nursing home1.png'
-import VolunteeringImage from '~/shared/assets/Volunteering-pana 1.png'
+
 import { format } from 'date-fns'
 
 interface FundraisingCardHorizontalProps {
