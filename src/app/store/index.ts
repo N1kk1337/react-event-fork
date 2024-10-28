@@ -3,7 +3,7 @@ import { apiAuth } from '~/app/store/api/login'
 import { createLogger } from 'redux-logger'
 import { apiProfile } from './api/profile'
 import { apiHelpRequests } from '~/app/store/api/helpRequestsApi'
-import { apiAllFavorites } from '~/app/store/api/favorites.ts'
+import { apiAllFavorites } from '~/app/store/api/favourites'
 
 const logger = createLogger({
 	collapsed: true

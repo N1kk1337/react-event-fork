@@ -12,13 +12,10 @@ import {
 import { format } from 'date-fns'
 
 import StarBorderIcon from '@mui/icons-material/StarBorder'
-import DementiaImage from '~/shared/assets/Dementia.png'
-<<<<<<< HEAD
-import {useNavigate} from "react-router-dom";
-=======
-import NursingHomeImage from '~/shared/assets/Nursing home1.png'
-import VolunteeringImage from '~/shared/assets/Volunteering-pana 1.png'
->>>>>>> 1f64ca8efe1140ee1e5cd16be83355ebbfc7e48f
+import DementiaImage from '~/shared/assets/images/Dementia.png'
+import NursingHomeImage from '~/shared/assets/images/Nursing home1.png'
+import VolunteeringImage from '~/shared/assets/images/Volunteering-pana 1.png'
+import { useNavigate, useParams } from 'react-router-dom'
 
 interface FundraisingCardProps {
 	title: string
@@ -29,12 +26,9 @@ interface FundraisingCardProps {
 	requestGoalCurrentValue: number
 	requestGoal: number
 	contributorsCount: number
-<<<<<<< HEAD
-	id: string
-=======
 	requesterType: string
 	helpType: string
->>>>>>> 1f64ca8efe1140ee1e5cd16be83355ebbfc7e48f
+	id: string
 }
 
 const FundraisingCard: React.FC<FundraisingCardProps> = ({
@@ -43,19 +37,12 @@ const FundraisingCard: React.FC<FundraisingCardProps> = ({
 	location,
 	goal,
 	completionDate,
-<<<<<<< HEAD
-	collected,
-	contributorsCount,
-	id
-}) => {
-
-	const navigate = useNavigate();
-=======
 	requestGoalCurrentValue,
 	requestGoal,
 	contributorsCount,
 	requesterType,
-	helpType
+	helpType,
+	id
 }) => {
 	const getImageByRequestParams = (requesterType: string, helpType: string) => {
 		if (requesterType === 'person' && helpType === 'finance') {
@@ -73,7 +60,8 @@ const FundraisingCard: React.FC<FundraisingCardProps> = ({
 	const formattedCompletionDate = completionDate
 		? format(new Date(completionDate), 'dd.MM.yyyy')
 		: 'N/A'
->>>>>>> 1f64ca8efe1140ee1e5cd16be83355ebbfc7e48f
+
+	const navigate = useNavigate()
 
 	return (
 		<Card
@@ -184,14 +172,10 @@ const FundraisingCard: React.FC<FundraisingCardProps> = ({
 					fullWidth
 					variant='contained'
 					color='primary'
-<<<<<<< HEAD
-					sx={{ marginBottom: '12px' }}
+					sx={{ marginBottom: '12px', marginLeft: '0px !important' }}
 					onClick={() => {
 						navigate(`/request/${id}`)
 					}}
-=======
-					sx={{ marginBottom: '12px', marginLeft: '0px !important' }}
->>>>>>> 1f64ca8efe1140ee1e5cd16be83355ebbfc7e48f
 				>
 					Помочь
 				</Button>

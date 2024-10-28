@@ -12,7 +12,7 @@ const logger = createLogger({
 const rootReducer = combineReducers({
 	[apiAuth.reducerPath]: apiAuth.reducer,
 	[apiProfile.reducerPath]: apiProfile.reducer,
-	[apiHelpRequests.reducerPath]: apiHelpRequests.reducer
+	[apiHelpRequests.reducerPath]: apiHelpRequests.reducer,
 	[apiAllFavorites.reducerPath]: apiAllFavorites.reducer
 })
 
@@ -23,6 +23,7 @@ export const store = configureStore({
 			.concat(apiAuth.middleware)
 			.concat(apiProfile.middleware)
 			.concat(apiHelpRequests.middleware)
+			.concat(apiAllFavorites.middleware)
 			.concat(logger)
 })
 
