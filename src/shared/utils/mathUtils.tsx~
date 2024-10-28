@@ -1,9 +1,0 @@
-export const calculatePercentage = ({
-	currentValue,
-	totalValue
-}: {
-	currentValue: string
-	totalValue: string
-}) => {
-	return Math.min((currentValue / totalValue) * 100, 100)
-}
