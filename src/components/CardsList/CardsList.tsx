@@ -2,23 +2,19 @@ import React, { useState } from 'react'
 import { Container, Typography, Box, Grid, Pagination } from '@mui/material'
 import FundraisingCard from './FundraisingCard'
 import { HelpRequest } from '~/shared/types/HelpRequest.types'
-import { FilterCriteria } from '~/shared/types/HelpRequest.types'
-import { useGetAllCardsQuery } from '~/app/store/api/helpRequestsApi.ts'
-import { AuthServiceTokens } from '~/shared/utils/token.service.ts'
-import ErrorGetCard from '~/components/errorGetCard/ErrorGetCard.tsx'
+
 import FundraisingCardHorizontal from './FundraisingCardHorizontal'
 import GridViewIcon from '@mui/icons-material/GridView'
 import ViewListIcon from '@mui/icons-material/ViewList'
+import PlaceIcon from '@mui/icons-material/Place'
 
 interface CardsListProps {
-	searchTerm: string
-	filters: FilterCriteria
+	requests: HelpRequest[]
 }
 
-const CardsList: React.FC<CardsListProps> = ({ searchTerm, filters }) => {
+const CardsList: React.FC<CardsListProps> = ({ requests }) => {
 	const [currentPage, setCurrentPage] = useState(1)
 	const cardsPerPage = 3
-	const { data: helpRequests, isLoading, isError } = useGetAllCardsQuery()
 
 	const [layout, setLayout] = useState<'horizontal' | 'vertical'>('vertical')
 
@@ -34,96 +30,35 @@ const CardsList: React.FC<CardsListProps> = ({ searchTerm, filters }) => {
 	) => {
 		setCurrentPage(value)
 	}
-	const token = AuthServiceTokens
-	const filteredCards =
-		helpRequests?.filter((request: HelpRequest) => {
-			const matchesSearchTerm =
-				request.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				request.organization.title
-					.toLowerCase()
-					.includes(searchTerm.toLowerCase())
 
-			const matchesFilters = Object.entries(filters).every(([key, value]) => {
-				if (Array.isArray(value) && value.length > 0) {
-					switch (key) {
-						case 'categories':
-							return (
-								(value.includes('Пенсионеры') &&
-									request.requesterType === 'person') ||
-								(value.includes('Дома престарелых') &&
-									request.requesterType === 'organization') ||
-								(value.includes('Вещи') && request.helpType === 'material') ||
-								(value.includes('Финансирование') &&
-									request.helpType === 'finance')
-							)
-						case 'specialization':
-							return (
-								(value.includes('Квалифицированная') &&
-									request.helperRequirements.qualification ===
-										'professional') ||
-								(value.includes('Не требует профессии') &&
-									request.helperRequirements.qualification === 'common')
-							)
-						case 'format':
-							return (
-								(value.includes('Онлайн') &&
-									request.helperRequirements.isOnline) ||
-								(value.includes('Офлайн') &&
-									!request.helperRequirements.isOnline)
-							)
-						case 'volunteerType':
-							return (
-								(value.includes('Группа') &&
-									request.helperRequirements.helperType === 'group') ||
-								(value.includes('Один') &&
-									request.helperRequirements.helperType === 'single')
-							)
-						default:
-							return true
-					}
-				}
+	// if (!token) {
+	// 	return (
+	// 		<Container maxWidth='lg'>
+	// 			<Typography variant='h5' gutterBottom>
+	// 				Пожалуйста, авторизуйтесь, чтобы просмотреть запросы о помощи.
+	// 			</Typography>
+	// 		</Container>
+	// 	)
+	// }
 
-				if (typeof value === 'string' && key === 'date') {
-					if (value === '') {
-						return true // Игнорируем фильтр по дате, если значение пустое
-					}
-					return new Date(request.endingDate) <= new Date(value)
-				}
+	// if (isLoading) {
+	// 	return (
+	// 		<Container maxWidth='lg'>
+	// 			<Typography variant='h5' gutterBottom>
+	// 				Загрузка запросов о помощи...
+	// 			</Typography>
+	// 		</Container>
+	// 	)
+	// }
 
-				return true
-			})
+	// if (isError) {
+	// 	return <ErrorGetCard />
+	// }
 
-			return matchesSearchTerm && matchesFilters
-		}) || []
-
-	if (!token) {
-		return (
-			<Container maxWidth='lg'>
-				<Typography variant='h5' gutterBottom>
-					Пожалуйста, авторизуйтесь, чтобы просмотреть запросы о помощи.
-				</Typography>
-			</Container>
-		)
-	}
-
-	if (isLoading) {
-		return (
-			<Container maxWidth='lg'>
-				<Typography variant='h5' gutterBottom>
-					Загрузка запросов о помощи...
-				</Typography>
-			</Container>
-		)
-	}
-
-	if (isError) {
-		return <ErrorGetCard />
-	}
-
-	const totalCards = filteredCards.length
+	const totalCards = requests.length
 	const indexOfLastCard = currentPage * cardsPerPage
 	const indexOfFirstCard = indexOfLastCard - cardsPerPage
-	const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard)
+	const currentCards = requests.slice(indexOfFirstCard, indexOfLastCard)
 
 	return (
 		<Container maxWidth='lg'>
@@ -134,6 +69,7 @@ const CardsList: React.FC<CardsListProps> = ({ searchTerm, filters }) => {
 				<Box onClick={toggleLayout}>
 					<GridViewIcon />
 					<ViewListIcon />
+					<PlaceIcon />
 				</Box>
 			</Box>
 

@@ -4,10 +4,74 @@ import SearchBar from '~/components/CardsList/SearchBar'
 import { CardListFilters } from '~/components/test/CardListFilters'
 
 import { Box, Container, Typography } from '@mui/material'
-import { FilterCriteria } from '~/shared/types/HelpRequest.types'
+import { FilterCriteria, HelpRequest } from '~/shared/types/HelpRequest.types'
+import { useGetAllCardsQuery } from '~/app/store/api/helpRequestsApi'
 
-function App() {
+function Main() {
 	const [searchTerm, setSearchTerm] = useState('')
+
+	const { data: helpRequests, isLoading, isError } = useGetAllCardsQuery()
+
+	const filteredRequests =
+		helpRequests?.filter((request: HelpRequest) => {
+			const matchesSearchTerm =
+				request.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				request.organization.title
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase())
+
+			const matchesFilters = Object.entries(filters).every(([key, value]) => {
+				if (Array.isArray(value) && value.length > 0) {
+					switch (key) {
+						case 'categories':
+							return (
+								(value.includes('Пенсионеры') &&
+									request.requesterType === 'person') ||
+								(value.includes('Дома престарелых') &&
+									request.requesterType === 'organization') ||
+								(value.includes('Вещи') && request.helpType === 'material') ||
+								(value.includes('Финансирование') &&
+									request.helpType === 'finance')
+							)
+						case 'specialization':
+							return (
+								(value.includes('Квалифицированная') &&
+									request.helperRequirements.qualification ===
+										'professional') ||
+								(value.includes('Не требует профессии') &&
+									request.helperRequirements.qualification === 'common')
+							)
+						case 'format':
+							return (
+								(value.includes('Онлайн') &&
+									request.helperRequirements.isOnline) ||
+								(value.includes('Офлайн') &&
+									!request.helperRequirements.isOnline)
+							)
+						case 'volunteerType':
+							return (
+								(value.includes('Группа') &&
+									request.helperRequirements.helperType === 'group') ||
+								(value.includes('Один') &&
+									request.helperRequirements.helperType === 'single')
+							)
+						default:
+							return true
+					}
+				}
+
+				if (typeof value === 'string' && key === 'date') {
+					if (value === '') {
+						return true // Игнорируем фильтр по дате, если значение пустое
+					}
+					return new Date(request.endingDate) <= new Date(value)
+				}
+
+				return true
+			})
+
+			return matchesSearchTerm && matchesFilters
+		}) || []
 
 	const [filters, setFilters] = useState<FilterCriteria>({})
 
@@ -40,11 +104,11 @@ function App() {
 						<SearchBar value={searchTerm} onChange={handleSearchChange} />
 					</Box>
 
-					<CardsList searchTerm={searchTerm} filters={filters} />
+					<CardsList requests={filteredRequests} />
 				</Box>
 			</Box>
 		</Container>
 	)
 }
 
-export default App
+export default Main

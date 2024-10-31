@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import {
 	styled,
 	Container,
@@ -26,42 +25,30 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 	filters,
 	onChange
 }) => {
-	const [localFilters, setLocalFilters] = useState<FilterCriteria>(filters)
-
-	useEffect(() => {
-		setLocalFilters(filters)
-	}, [filters])
-
 	const handleCheckboxChange = (
 		category: keyof FilterCriteria,
 		value: string
 	) => {
-		setLocalFilters(prevFilters => {
-			const currentValues = Array.isArray(prevFilters[category])
-				? (prevFilters[category] as string[])
-				: []
-			const updatedCategories = currentValues.includes(value)
-				? currentValues.filter(item => item !== value)
-				: [...currentValues, value]
+		const currentValues = Array.isArray(filters[category])
+			? (filters[category] as string[])
+			: []
+		const updatedCategories = currentValues.includes(value)
+			? currentValues.filter(item => item !== value)
+			: [...currentValues, value]
 
-			const updatedFilters = {
-				...prevFilters,
-				[category]: updatedCategories
-			}
+		const updatedFilters = {
+			...filters,
+			[category]: updatedCategories
+		}
 
-			return updatedFilters
-		})
+		return updatedFilters
 	}
 
-	useEffect(() => {
-		onChange(localFilters)
-	}, [localFilters, onChange])
-
 	const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setLocalFilters(prevFilters => ({
-			...prevFilters,
+		onChange({
+			...filters,
 			date: event.target.value
-		}))
+		})
 	}
 
 	const handleReset = () => {
@@ -72,7 +59,6 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 			volunteerType: [],
 			date: ''
 		}
-		setLocalFilters(resetFilters)
 		onChange(resetFilters)
 	}
 
@@ -103,8 +89,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 						control={
 							<Checkbox
 								checked={
-									Array.isArray(localFilters.categories) &&
-									localFilters.categories.includes('Пенсионеры')
+									Array.isArray(filters.categories) &&
+									filters.categories.includes('Пенсионеры')
 								}
 								onChange={() =>
 									handleCheckboxChange('categories', 'Пенсионеры')
@@ -118,8 +104,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 						control={
 							<Checkbox
 								checked={
-									Array.isArray(localFilters.categories) &&
-									localFilters.categories.includes('Дома престарелых')
+									Array.isArray(filters.categories) &&
+									filters.categories.includes('Дома престарелых')
 								}
 								onChange={() =>
 									handleCheckboxChange('categories', 'Дома престарелых')
@@ -138,8 +124,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 						control={
 							<Checkbox
 								checked={
-									Array.isArray(localFilters.categories) &&
-									localFilters.categories.includes('Вещи')
+									Array.isArray(filters.categories) &&
+									filters.categories.includes('Вещи')
 								}
 								onChange={() => handleCheckboxChange('categories', 'Вещи')}
 							/>
@@ -151,8 +137,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 						control={
 							<Checkbox
 								checked={
-									Array.isArray(localFilters.categories) &&
-									localFilters.categories.includes('Финансирование')
+									Array.isArray(filters.categories) &&
+									filters.categories.includes('Финансирование')
 								}
 								onChange={() =>
 									handleCheckboxChange('categories', 'Финансирование')
@@ -190,10 +176,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 										control={
 											<Checkbox
 												checked={
-													Array.isArray(localFilters.specialization) &&
-													localFilters.specialization.includes(
-														'Квалифицированная'
-													)
+													Array.isArray(filters.specialization) &&
+													filters.specialization.includes('Квалифицированная')
 												}
 												onChange={() =>
 													handleCheckboxChange(
@@ -210,8 +194,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 										control={
 											<Checkbox
 												checked={
-													Array.isArray(localFilters.specialization) &&
-													localFilters.specialization.includes(
+													Array.isArray(filters.specialization) &&
+													filters.specialization.includes(
 														'Не требует профессии'
 													)
 												}
@@ -235,8 +219,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 										control={
 											<Checkbox
 												checked={
-													Array.isArray(localFilters.format) &&
-													localFilters.format.includes('Онлайн')
+													Array.isArray(filters.format) &&
+													filters.format.includes('Онлайн')
 												}
 												onChange={() =>
 													handleCheckboxChange('format', 'Онлайн')
@@ -250,8 +234,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 										control={
 											<Checkbox
 												checked={
-													Array.isArray(localFilters.format) &&
-													localFilters.format.includes('Офлайн')
+													Array.isArray(filters.format) &&
+													filters.format.includes('Офлайн')
 												}
 												onChange={() =>
 													handleCheckboxChange('format', 'Офлайн')
@@ -272,8 +256,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 										control={
 											<Checkbox
 												checked={
-													Array.isArray(localFilters.volunteerType) &&
-													localFilters.volunteerType.includes('Группа')
+													Array.isArray(filters.volunteerType) &&
+													filters.volunteerType.includes('Группа')
 												}
 												onChange={() =>
 													handleCheckboxChange('volunteerType', 'Группа')
@@ -287,8 +271,8 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 										control={
 											<Checkbox
 												checked={
-													Array.isArray(localFilters.volunteerType) &&
-													localFilters.volunteerType.includes('Один')
+													Array.isArray(filters.volunteerType) &&
+													filters.volunteerType.includes('Один')
 												}
 												onChange={() =>
 													handleCheckboxChange('volunteerType', 'Один')
@@ -314,7 +298,7 @@ export const CardListFilters: React.FC<CardListFiltersProps> = ({
 					variant='outlined'
 					size='small'
 					sx={{ mt: 1.25, mb: 5 }}
-					value={localFilters.date || ''}
+					value={filters.date || ''}
 					onChange={handleDateChange}
 					InputLabelProps={{
 						shrink: true

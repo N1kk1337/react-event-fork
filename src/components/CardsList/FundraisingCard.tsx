@@ -145,17 +145,9 @@ const FundraisingCard: React.FC<FundraisingCardProps> = ({
 				<Typography>
 					{requestGoalCurrentValue} из {requestGoal} руб.
 				</Typography>
-				<LinearProgress
-					variant='determinate'
-					value={
-						requestGoal <= 0
-							? 100
-							: Math.min(100, (100 * requestGoalCurrentValue) / requestGoal)
-					}
-					sx={{ mt: 1, mb: 2 }}
-				/>
 			</CardContent>
 			<CardActions
+				disableSpacing
 				sx={{
 					height: 92,
 					display: 'flex',
@@ -165,6 +157,20 @@ const FundraisingCard: React.FC<FundraisingCardProps> = ({
 					alignItems: 'flex-start'
 				}}
 			>
+				<LinearProgress
+					variant='determinate'
+					value={
+						requestGoal <= 0
+							? 100
+							: Math.min(100, (100 * requestGoalCurrentValue) / requestGoal)
+					}
+					sx={{
+						mt: 1,
+						mb: 2,
+						width: '100%',
+						minHeight: '4px'
+					}}
+				/>
 				<Typography variant='body2' color='textSecondary'>
 					Нас уже: {contributorsCount}
 				</Typography>

@@ -38,7 +38,7 @@ const HelpRequestPage = () => {
 
 	useEffect(() => {
 		if (allFavs) {
-			// @ts-ignore
+			// @ts-expect-error //TODO
 			setAddedToFav(allFavs.includes(id))
 		}
 	}, [allFavs])
